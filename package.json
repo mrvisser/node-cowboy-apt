@@ -1,0 +1,33 @@
+{
+  "name": "cowboy-apt",
+  "description": "A cowboy module that manages aptitude packages on ubuntu machines",
+  "version": "0.0.2",
+  "homepage": "https://github.com/mrvisser/node-cowboy-apt",
+  "author": {
+    "name": "Branden Visser",
+    "email": "mrvisser@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mrvisser/node-cowboy-apt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mrvisser/node-cowboy-apt/issues"
+  },
+  "dependencies": {
+    "apt": "latest",
+    "colors": "latest",
+    "optimist": "latest",
+    "sprintf-js": "latest",
+    "underscore": "latest"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+  "devDependencies": {
+    "cowboy-cli-api": "latest",
+    "grunt": "~0.4.2",
+    "grunt-mocha-test": "latest"
+  }
+}
