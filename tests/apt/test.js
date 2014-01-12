@@ -19,6 +19,14 @@ describe('Apt', function() {
             });
         });
 
+        it('gives a validation error if invalid force-conf parameter is specified', function(callback) {
+            cowboyCli.cowboy(testUtil.defaultCowboyConfig(), 'cowboy-apt:install', ['libpng3', '--force-conf', 'blah'], function(code, output) {
+                assert.strictEqual(code, 1);
+                assert.strictEqual(output.split('\n')[2], 'If the --force-conf argument is specified, its value must be one of "old" or "new"');
+                return callback();
+            });
+        });
+
         it('results in an error when trying to install non-existing package', function(callback) {
             this.timeout(30000);
 
