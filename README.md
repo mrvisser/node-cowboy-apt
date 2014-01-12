@@ -1,4 +1,4 @@
-# node-cowboy-exec
+# node-cowboy-apt
 
 [![Build Status](https://travis-ci.org/mrvisser/node-cowboy-apt.png?branch=master)](https://travis-ci.org/mrvisser/node-cowboy-apt)
 
