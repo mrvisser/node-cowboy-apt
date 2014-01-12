@@ -14,22 +14,16 @@ var Command = module.exports = function() {
 
 Command.prototype.help = function() {
     return {
-        'description': 'Install an aptitude package.',
-        'args': '[--force-conf=old (old | new)] <package name>[=<package version>]',
-        'exampleArgs': [
-            'redis-server',
-            'redis-server=2:2.6.16-3',
-            '--force-conf=new redis-server'
-        ]
+        'description': 'Show details about an aptitude package.',
+        'args': '<package name>',
+        'exampleArgs': ['redis-server']
     };
 };
 
 Command.prototype.validate = function(ctx, done) {
     var argv = _argv(ctx);
     if (!_.isArray(argv._) || argv._.length !== 1) {
-        return done('Must specify one package to install');
-    } else if (!_.contains(['old', 'new'], argv['force-conf'])) {
-        return done('If the --force-conf argument is specified, its value must be one of "old" or "new"');
+        return done('Must specify one package whose details to show');
     }
 
     return done();
@@ -38,7 +32,7 @@ Command.prototype.validate = function(ctx, done) {
 Command.prototype.before = function(ctx, done) {
     var argv = _argv(ctx);
     console.log();
-    console.log('Installing package: %s', argv._[0].bold);
+    console.log('Inspecting package: %s', argv._[0].bold);
     console.log();
 
     reporting.printTableHeader('Host', 'Result');
@@ -48,10 +42,8 @@ Command.prototype.before = function(ctx, done) {
 
 Command.prototype.exec = function(ctx, reply, done) {
     var argv = _argv(ctx);
-    var confnew = (argv['force-conf'] === 'new') ? true : false;
-
     // Begin the install execution
-    var install = apt.install(argv._[0], function(err, pkg) {
+    var install = apt.show(argv._[0], function(err, pkg) {
         reply({
             'type': 'complete',
             'data': {
@@ -89,10 +81,10 @@ Command.prototype.hostEnd = function(ctx, host, responses, done) {
         msg = 'Invalid response received'.red;
     } else if (pkg.data.error) {
         this._numError++;
-        msg = 'An error occurred while installing the package'.red;
+        msg = 'Package information not available'.red;
     } else {
         this._numSuccess++;
-        msg = util.format('Installed: %s', util.format('%s=%s (%s)', pkg.data.pkg.Package, pkg.data.pkg.Version, pkg.data.pkg.Status).bold);
+        msg = util.format('%s', util.format('%s=%s (%s)', pkg.data.pkg.Package, pkg.data.pkg.Version, pkg.data.pkg.Status).bold);
     }
 
     reporting.printTableRow(host, msg);
